@@ -131,8 +131,8 @@
     </div>
     <h1 data-i18n="slogan">Electric Scooter Rentals</h1>
     <div id="slogans">
-        <p class="slogan animate__animated" data-i18n="tagline1">Travel safe, travel green: Tenerife awaits you</p>
-        <p class="slogan animate__animated" data-i18n="tagline2">Explore with confidence, live green: Tenerife in a new light</p>
+        <p class="slogan animate__animated" data-i18n="tagline1">Travel safe, travel green: Go Electric</p>
+        <p class="slogan animate__animated" data-i18n="tagline2">Explore with confidence, live green: Go Electric</p>
         <p class="slogan animate__animated" data-i18n="tagline3">On the roads of Tenerife, your safety meets nature</p>
     </div>
     <div id="scooter-images">
@@ -169,8 +169,8 @@
           translation: {
             "title": "Electric Scooter Rentals - Tenerife Green Travel",
             "slogan": "Travel Green with Our Electric Scooters",
-            "tagline1": "Travel safe, travel green: Tenerife awaits you",
-            "tagline2": "Explore with confidence, live green: Tenerife in a new light",
+            "tagline1": "Travel safe, travel green: Go Electric",
+            "tagline2": "Explore with confidence, live green: Go Electric",
             "tagline3": "On the roads of Tenerife, your safety meets nature",
             "showPrices": "Show Prices",
             "bookNow": "Book Now",
@@ -182,6 +182,7 @@
             "priceDay6": "6 days: €130",
             "priceDay7": "7 days: €140",
             "priceExtraDay": "for each extra day: €15",
+            "hidePrices": "Hide Prices",
             "copyright": "© MichaeldettoDamiano"
           }
         },
@@ -189,8 +190,8 @@
           translation: {
             "title": "Noleggio Scooter Elettrici - Viaggi Verdi a Tenerife",
             "slogan": "Viaggia Verde con i Nostri Scooter Elettrici",
-            "tagline1": "Viaggia sicuro, viaggia verde: Tenerife ti aspetta",
-            "tagline2": "Esplora con fiducia, vivi verde: Tenerife in una nuova luce",
+            "tagline1": "Viaggia sicuro, viaggia verde: Go Electric",
+            "tagline2": "Esplora con fiducia, vivi verde: Go Electric",
             "tagline3": "Sulle strade di Tenerife, la tua sicurezza incontra la natura",
             "showPrices": "Mostra Prezzi",
             "bookNow": "Prenota Ora",
@@ -202,6 +203,7 @@
             "priceDay6": "6 giorni: 130€",
             "priceDay7": "7 giorni: 140€",
             "priceExtraDay": "per ogni giorno aggiuntivo: 15€",
+            "hidePrices": "Nascondi Prezzi",
             "copyright": "© MichaeldettoDamiano"
           }
         },
@@ -209,8 +211,8 @@
           translation: {
             "title": "Elektroroller Vermietung - Grünes Reisen in Teneriffa",
             "slogan": "Reisen Sie Grün mit Unseren Elektrorollern",
-            "tagline1": "Sicher und grün reisen: Teneriffa erwartet Sie",
-            "tagline2": "Erkunden Sie mit Vertrauen, leben Sie grün: Teneriffa in einem neuen Licht",
+            "tagline1": "Sicher und grün reisen: Go Electric",
+            "tagline2": "Erkunden Sie mit Vertrauen, leben Sie grün: Go Electric",
             "tagline3": "Auf den Straßen Teneriffas begegnet Ihre Sicherheit der Natur",
             "showPrices": "Preise Anzeigen",
             "bookNow": "Jetzt Buchen",
@@ -222,6 +224,7 @@
             "priceDay6": "6 Tage: 130€",
             "priceDay7": "7 Tage: 140€",
             "priceExtraDay": "für jeden zusätzlichen Tag: 15€",
+            "hidePrices": "Preise Verbergen",
             "copyright": "© MichaeldettoDamiano"
           }
         },
@@ -229,8 +232,8 @@
           translation: {
             "title": "Location de Scooters Électriques - Voyagez Vert à Ténérife",
             "slogan": "Voyagez Vert avec Nos Scooters Électriques",
-            "tagline1": "Voyagez sûr, voyagez vert : Ténérife vous attend",
-            "tagline2": "Explorez en toute confiance, vivez vert : Ténérife sous un nouveau jour",
+            "tagline1": "Voyagez sûr, voyagez vert : Go Electric",
+            "tagline2": "Explorez en toute confiance, vivez vert : Go Electric",
             "tagline3": "Sur les routes de Ténérife, votre sécurité rencontre la nature",
             "showPrices": "Afficher les Prix",
             "bookNow": "Réservez Maintenant",
@@ -242,6 +245,7 @@
             "priceDay6": "6 jours : 130€",
             "priceDay7": "7 jours : 140€",
             "priceExtraDay": "pour chaque jour supplémentaire : 15€",
+                    "hidePrices": "Cacher les Prix",
             "copyright": "© MichaeldettoDamiano"
           }
         }
@@ -254,15 +258,20 @@
     function changeLanguage(lng) {
         i18next.changeLanguage(lng, () => {
             $('body').localize();
+            updatePriceButton(); // Aggiorna il testo del pulsante dopo il cambio lingua
         });
     }
 
-    // Image switching functionality
-    document.getElementById('scooter-image').addEventListener('click', function() {
-      this.src = this.src.includes('foto1.png') ? 'foto2.png' : 'foto1.png';
-    });
+    function updatePriceButton() {
+        const showPricesBtn = document.getElementById('show-prices-btn');
+        const pricesDiv = document.querySelector('.prices');
+        if (pricesDiv.style.display === 'block') {
+            showPricesBtn.textContent = i18next.t('hidePrices');
+        } else {
+            showPricesBtn.textContent = i18next.t('showPrices');
+        }
+    }
 
-    // Slogan rotation functionality
     document.addEventListener('DOMContentLoaded', function() {
     const slogans = document.querySelectorAll('.slogan');
     let currentSloganIndex = 0;
@@ -280,14 +289,16 @@
         }, 500);
     }, 4000);
 
+    // Nuovo codice per cambiare l'immagine al click
+    const scooterImage = document.getElementById('scooter-image');
+    scooterImage.addEventListener('click', function() {
+        this.src = this.src.includes('foto1.png') ? 'foto2.png' : 'foto1.png';
+    });
+
     const showPricesBtn = document.getElementById('show-prices-btn');
     const pricesDiv = document.querySelector('.prices');
 
-    if (pricesDiv.style.display === 'block') {
-        showPricesBtn.textContent = i18next.t('hidePrices');
-    } else {
-        showPricesBtn.textContent = i18next.t('showPrices');
-    }
+    updatePriceButton();  // Assicurati che il pulsante sia correttamente etichettato al caricamento
 
     showPricesBtn.addEventListener('click', () => {
         if (pricesDiv.style.display === 'none' || pricesDiv.style.display === '') {
