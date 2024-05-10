@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rent electric scooters in Tenerife for a green and safe travel experience. Explore Tenerife with ease and comfort.">
     <title>Electric Scooter Rentals - Tenerife Green Travel</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
     <link rel="icon" href="logo.ico">
@@ -149,10 +150,10 @@
         <div class="price" data-i18n="priceDay7">7 days: €140</div>
         <div class="price" data-i18n="priceExtraDay">for each extra day: €15</div>
     </div>
-    <a href="https://forms.gle/vjmewSa7hGm22qre8" class="btn" data-i18n="bookNow">Book Now</a>
+    <a href="https://forms.gle/vjmewSa7hGm22qre8" class="btn" data-i18n="bookNow" rel="noopener noreferrer" target="_blank">Book Now</a>
     <div class="social-icons">
-        <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-instagram"></i></a>
         <a href="dovesiamo.html" class="social-icon"><i class="fas fa-map-marker-alt"></i></a>
     </div>
     <div class="registered" data-i18n="copyright">© MichaeldettoDamiano</div>
@@ -273,44 +274,42 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-    const slogans = document.querySelectorAll('.slogan');
-    let currentSloganIndex = 0;
+        const slogans = document.querySelectorAll('.slogan');
+        let currentSloganIndex = 0;
 
-    slogans[currentSloganIndex].style.display = 'block';
-    slogans[currentSloganIndex].classList.add('animate__animated', 'animate__fadeIn');
+        slogans[currentSloganIndex].style.display = 'block';
+        slogans[currentSloganIndex].classList.add('animate__animated', 'animate__fadeIn');
 
-    setInterval(() => {
-        slogans[currentSloganIndex].classList.replace('animate__fadeIn', 'animate__fadeOut');
-        setTimeout(() => {
-            slogans[currentSloganIndex].style.display = 'none';
-            currentSloganIndex = (currentSloganIndex + 1) % slogans.length;
-            slogans[currentSloganIndex].style.display = 'block';
-            slogans[currentSloganIndex].classList.replace('animate__fadeOut', 'animate__fadeIn');
-        }, 500);
-    }, 4000);
+        setInterval(() => {
+            slogans[currentSloganIndex].classList.replace('animate__fadeIn', 'animate__fadeOut');
+            setTimeout(() => {
+                slogans[currentSloganIndex].style.display = 'none';
+                currentSloganIndex = (currentSloganIndex + 1) % slogans.length;
+                slogans[currentSloganIndex].style.display = 'block';
+                slogans[currentSloganIndex].classList.replace('animate__fadeOut', 'animate__fadeIn');
+            }, 500);
+        }, 4000);
 
-    // Nuovo codice per cambiare l'immagine al click
-    const scooterImage = document.getElementById('scooter-image');
-    scooterImage.addEventListener('click', function() {
-        this.src = this.src.includes('foto1.png') ? 'foto2.png' : 'foto1.png';
+        const scooterImage = document.getElementById('scooter-image');
+        scooterImage.addEventListener('click', function() {
+            this.src = this.src.includes('foto1.png') ? 'foto2.png' : 'foto1.png';
+        });
+
+        const showPricesBtn = document.getElementById('show-prices-btn');
+        const pricesDiv = document.querySelector('.prices');
+
+        updatePriceButton();  // Assicurati che il pulsante sia correttamente etichettato al caricamento
+
+        showPricesBtn.addEventListener('click', () => {
+            if (pricesDiv.style.display === 'none' || pricesDiv.style.display === '') {
+                pricesDiv.style.display = 'block';
+                showPricesBtn.textContent = i18next.t('hidePrices');
+            } else {
+                pricesDiv.style.display = 'none';
+                showPricesBtn.textContent = i18next.t('showPrices');
+            }
+        });
     });
-
-    const showPricesBtn = document.getElementById('show-prices-btn');
-    const pricesDiv = document.querySelector('.prices');
-
-    updatePriceButton();  // Assicurati che il pulsante sia correttamente etichettato al caricamento
-
-    showPricesBtn.addEventListener('click', () => {
-        if (pricesDiv.style.display === 'none' || pricesDiv.style.display === '') {
-            pricesDiv.style.display = 'block';
-            showPricesBtn.textContent = i18next.t('hidePrices');
-        } else {
-            pricesDiv.style.display = 'none';
-            showPricesBtn.textContent = i18next.t('showPrices');
-        }
-    });
-});
-
 </script>
 </body>
 </html>
