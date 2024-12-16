@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rent electric scooters in Tenerife for a green and safe travel experience. Explore Tenerife with ease and comfort.">
+    <title>Electric Scooter Rentals - Tenerife Green Travel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="icon" href="logo.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"/>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 16px;
+            animation: pulse 2s infinite;
+        }
+        h1 {
+            font-family: 'Open Sans', sans-serif;
+            margin: 10px 0;
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #00B4DB, #0083B0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .slogan {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.3rem;
+            color: #4A90E2;
+            margin: 10px 0;
+            display: none; /* Initially hidden */
+        }
+        .language-selector select {
+            padding: 8px 16px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            background-color: white;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .language-selector select:hover, .language-selector select:focus {
+            border-color: #0056b3;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        .social-icon {
+            color: #333;
+            font-size: 40px;
+            transition: color 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        .social-icon:hover, .social-icon:focus {
+            color: #007BFF;
+            transform: scale(1.1);
+        }
+        .btn {
+            background-color: #007BFF;
+            background-image: linear-gradient(45deg, #007BFF 0%, #0041C4 100%);
+            color: #ffffff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover, .btn:focus {
+            background-image: linear-gradient(45deg, #0062cc 0%, #0032a0 100%);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .prices {
+            display: none;
+        }
+        .price {
+            margin: 20px 0;
+            font-size: 20px;
+            color: #555;
+            transition: color 0.3s;
+        }
+        .price:hover {
+            color: #007BFF;
+            font-weight: 700;
+        }
+        #scooter-image {
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #scooter-image:hover {
+            transform: scale(1.05);
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" data-aos="zoom-in">
+    <img src="logo.ico" alt="Company Logo" class="logo">
+    <img src="logoeasy.ico" alt="Company Logo" class="logo">
+    <div class="language-selector" data-aos="fade-down" data-aos-delay="200">
+        <select onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="it">Italiano</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+        </select>
+    </div>
+    <h1 data-i18n="slogan" data-aos="fade-right" data-aos-delay="400">Electric Scooter Rentals</h1>
+    <div id="slogans">
+        <p class="slogan animate__animated" data-i18n="tagline1" data-aos="fade-left" data-aos-delay="600">Travel safe, travel green: Go Electric</p>
+        <p class="slogan animate__animated" data-i18n="tagline2" data-aos="fade-left" data-aos-delay="800">Explore with confidence, live green: Go Electric</p>
+        <p class="slogan animate__animated" data-i18n="tagline3" data-aos="fade-left" data-aos-delay="1000">On the roads of Tenerife, your safety meets nature</p>
+    </div>
+    <div id="scooter-images" data-aos="fade-up" data-aos-delay="1200">
+        <img src="4fronte.jpg" id="scooter-image" alt="Front view of electric scooter">
+    </div>
+    <button class="btn" id="show-prices-btn" data-i18n="showPrices" data-aos="fade-up" data-aos-delay="1400">Show Prices</button>
+    <div class="prices">
+        <div class="price" data-i18n="priceDay1">1 day: €40</div>
+        <div class="price" data-i18n="priceDay2">2 days: €70</div>
+        <div class="price" data-i18n="priceDay3">3 days: €90</div>
+        <div class="price" data-i18n="priceDay4">4 days: €110</div>
+        <div class="price" data-i18n="priceDay5">5 days: €120</div>
+        <div class="price" data-i18n="priceDay6">6 days: €130</div>
+        <div class="price" data-i18n="priceDay7">7 days: €140</div>
+        <div class="price" data-i18n="priceExtraDay">for each extra day: €15</div>
+    </div>
+    <a href="prenotazioni.html" class="btn" data-i18n="bookNow" rel="noopener noreferrer" target="_blank" data-aos="fade-up" data-aos-delay="1600">Book Now</a>
+    <div class="social-icons" data-aos="fade-up" data-aos-delay="1800">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="dovesiamo.html" class="social-icon"><i class="fas fa-map-marker-alt"></i></a>
+    </div>
+    <div class="registered" data-i18n="copyright" data-aos="fade-up" data-aos-delay="2000">© MichaeldettoDamiano</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/20.3.2/i18next.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-i18next/1.2.1/jquery-i18next.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    i18next.init({
+      lng: 'en', // Default language
+      debug: true,
+      resources: {
+        en: {
+          translation: {
+            "title": "Electric Scooter Rentals - Tenerife Green Travel",
+            "slogan": "Travel Green with Our Electric Scooters",
+            "tagline1": "Travel safe, travel green: Go Electric",
+            "tagline2": "Explore with confidence, live green: Go Electric",
+            "tagline3": "On the roads of Tenerife, your safety meets nature",
+            "showPrices": "Show Prices",
+            "bookNow": "Book Now",
+            "priceDay1": "1 day: €50",
+            "priceDay2": "2 days: €90",
+            "priceDay3": "3 days: €120",
+            "priceDay4": "4 days: €140",
+            "priceDay5": "5 days: €155",
+            "priceDay6": "6 days: €165",
+            "priceDay7": "7 days: €175",
+            "priceExtraDay": "for each extra day: €20",
+            "hidePrices": "Hide Prices",
+            "copyright": "© MichaeldettoDamiano"
+          }
+        },
+        it: {
+          translation: {
+            "title": "Noleggio Scooter Elettrici - Viaggi Verdi a Tenerife",
+            "slogan": "Viaggia Verde con i Nostri Scooter Elettrici",
+            "tagline1": "Viaggia sicuro, viaggia verde: Go Electric",
+            "tagline2": "Esplora con fiducia, vivi verde: Go Electric",
+            "tagline3": "Sulle strade di Tenerife, la tua sicurezza incontra la natura",
+            "showPrices": "Mostra Prezzi",
+            "bookNow": "Prenota Ora",
+            "priceDay1": "1 giorno: 50€",
+            "priceDay2": "2 giorni: 90€",
+            "priceDay3": "3 giorni: 120€",
+            "priceDay4": "4 giorni: 140€",
+            "priceDay5": "5 giorni: 155€",
+            "priceDay6": "6 giorni: 165€",
+            "priceDay7": "7 giorni: 175€",
+            "priceExtraDay": "per ogni giorno aggiuntivo: 20€",
+            "hidePrices": "Nascondi Prezzi",
+            "copyright": "© MichaeldettoDamiano"
+          }
+        },
+        de: {
+          translation: {
+            "title": "Elektroroller Vermietung - Grünes Reisen in Teneriffa",
+            "slogan": "Reisen Sie Grün mit Unseren Elektrorollern",
+            "tagline1": "Sicher und grün reisen: Go Electric",
+            "tagline2": "Erkunden Sie mit Vertrauen, leben Sie grün: Go Electric",
+            "tagline3": "Auf den Straßen Teneriffas begegnet Ihre Sicherheit der Natur",
+            "showPrices": "Preise Anzeigen",
+            "bookNow": "Jetzt Buchen",
+            "priceDay1": "1 Tag: 50€",
+            "priceDay2": "2 Tage: 90€",
+            "priceDay3": "3 Tage: 120€",
+            "priceDay4": "4 Tage: 140€",
+            "priceDay5": "5 Tage: 155€",
+            "priceDay6": "6 Tage: 165€",
+            "priceDay7": "7 Tage: 175€",
+            "priceExtraDay": "für jeden zusätzlichen Tag: 20€",
+            "hidePrices": "Preise Verbergen",
+            "copyright": "© MichaeldettoDamiano"
+          }
+        },
+        fr: {
+          translation: {
+            "title": "Location de Scooters Électriques - Voyagez Vert à Ténérife",
+            "slogan": "Voyagez Vert avec Nos Scooters Électriques",
+            "tagline1": "Voyagez sûr, voyagez vert : Go Electric",
+            "tagline2": "Explorez en toute confiance, vivez vert : Go Electric",
+            "tagline3": "Sur les routes de Ténérife, votre sécurité rencontre la nature",
+            "showPrices": "Afficher les Prix",
+            "bookNow": "Réservez Maintenant",
+            "priceDay1": "1 jour : 50€",
+            "priceDay2": "2 jours : 90€",
+            "priceDay3": "3 jours : 120€",
+            "priceDay4": "4 jours : 140€",
+            "priceDay5": "5 jours : 155€",
+            "priceDay6": "6 jours : 165€",
+            "priceDay7": "7 jours : 175€",
+            "priceExtraDay": "pour chaque jour supplémentaire : 20€",
+                    "hidePrices": "Cacher les Prix",
+            "copyright": "© MichaeldettoDamiano"
+          }
+        }
+      }
+    }, function(err, t) {
+      jqueryI18next.init(i18next, $);
+      $('body').localize();
+    });
+
+    function changeLanguage(lng) {
+        i18next.changeLanguage(lng, () => {
+            $('body').localize();
+            updatePriceButton(); // Aggiorna il testo del pulsante dopo il cambio lingua
+        });
+    }
+
+    function updatePriceButton() {
+        const showPricesBtn = document.getElementById('show-prices-btn');
+        const pricesDiv = document.querySelector('.prices');
+        if (pricesDiv.style.display === 'block') {
+            showPricesBtn.textContent = i18next.t('hidePrices');
+        } else {
+            showPricesBtn.textContent = i18next.t('showPrices');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const slogans = document.querySelectorAll('.slogan');
+        let currentSloganIndex = 0;
+
+        slogans[currentSloganIndex].style.display = 'block';
+        slogans[currentSloganIndex].classList.add('animate__animated', 'animate__fadeIn');
+
+        setInterval(() => {
+            slogans[currentSloganIndex].classList.replace('animate__fadeIn', 'animate__fadeOut');
+            setTimeout(() => {
+                slogans[currentSloganIndex].style.display = 'none';
+                currentSloganIndex = (currentSloganIndex + 1) % slogans.length;
+                slogans[currentSloganIndex].style.display = 'block';
+                slogans[currentSloganIndex].classList.replace('animate__fadeOut', 'animate__fadeIn');
+            }, 500);
+        }, 4000);
+
+        const scooterImage = document.getElementById('scooter-image');
+        scooterImage.addEventListener('click', function() {
+            this.src = this.src.includes('4fronte.jpg') ? '4laterale.jpg' : '4fronte.jpg';
+            this.classList.add('animate__animated', 'animate__flipInY');
+            setTimeout(() => {
+                this.classList.remove('animate__animated', 'animate__flipInY');
+            }, 1000);
+        });
+
+        const showPricesBtn = document.getElementById('show-prices-btn');
+        const pricesDiv = document.querySelector('.prices');
+
+        updatePriceButton();  // Assicurati che il pulsante sia correttamente etichettato al caricamento
+
+        showPricesBtn.addEventListener('click', () => {
+            if (pricesDiv.style.display === 'none' || pricesDiv.style.display === '') {
+                pricesDiv.style.display = 'block';
+                showPricesBtn.textContent = i18next.t('hidePrices');
+                pricesDiv.classList.add('animate__animated', 'animate__fadeIn');
+            } else {
+                pricesDiv.classList.add('animate__animated', 'animate__fadeOut');
+                setTimeout(() => {
+                    pricesDiv.style.display = 'none';
+                    pricesDiv.classList.remove('animate__animated', 'animate__fadeIn', 'animate__fadeOut');
+                    showPricesBtn.textContent = i18next.t('showPrices');
+                }, 500);
+            }
+        });
+
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+    });
+</script>
+</body>
+</html>
+       
