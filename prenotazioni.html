@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Electric Scooter</title>
+    <link rel="icon" href="logo.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .logo-container img { width: 120px; margin: 10px; }
+        h1 { color: #333; }
+        #calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin: 20px 0; max-width: 600px; }
+        .day { padding: 10px; text-align: center; border: 1px solid #ddd; cursor: pointer; font-size: 14px; transition: background-color 0.3s; }
+        .day.available { background-color: #c8e6c9; color: #2e7d32; }
+        .day.unavailable { background-color: #ffcdd2; color: #b71c1c; pointer-events: none; }
+        .day.selected { background-color: #64b5f6; color: #fff; font-weight: bold; }
+        .form-container { display: flex; flex-direction: column; gap: 10px; background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); width: 100%; max-width: 600px; }
+        .form-container input { padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; width: 100%; }
+        .form-container label { display: flex; align-items: center; gap: 5px; }
+        .summary { margin-top: 10px; font-weight: bold; }
+        .btn { padding: 10px 20px; background-color: #007BFF; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        .month-controls { display: flex; justify-content: space-between; width: 600px; margin-bottom: 10px; }
+        .month-controls button { padding: 5px 10px; font-size: 14px; cursor: pointer; border: none; background-color: #007BFF; color: white; border-radius: 5px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 5px; width: 90%; max-width: 400px; }
+        .modal-header { font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<div class="logo-container">
+    <img src="logo.ico" alt="Logo">
+    <img src="logoeasy.ico" alt="EasyGo Logo">
+</div>
+<h1>Book Your Scooter</h1>
+<div class="month-controls">
+    <button onclick="changeMonth(-1)" id="prev-month">&lt; Previous</button>
+    <h2 id="current-month"></h2>
+    <button onclick="changeMonth(1)">Next &gt;</button>
+</div>
+<div id="calendar"></div>
+<div class="form-container">
+    <h2>Booking Summary</h2>
+    <div class="summary" id="date-summary">Selected dates: None</div>
+    <div class="summary" id="total-summary">Total: €0</div>
+    <input type="text" id="first-name" placeholder="First Name" required>
+    <input type="text" id="last-name" placeholder="Last Name" required>
+    <input type="tel" id="phone-number" placeholder="Phone Number" required>
+    <label>
+        <input type="checkbox" id="delivery-checkbox"> Delivery
+    </label>
+    <input type="text" id="hotel-name" placeholder="Hotel Name" style="display:none;" required>
+    <button class="btn" onclick="showConfirmation()">Confirm and Pay</button>
+</div>
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="modal-header">Confirm Your Booking</div>
+        <div id="modal-body"></div>
+        <button class="btn" onclick="submitBooking()">Confirm</button>
+        <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyC346gJHt-Dg7_bjzYw7k1D6j0tcalxht4",
+        authDomain: "goelectric-e9299.firebaseapp.com",
+        databaseURL: "https://goelectric-e9299-default-rtdb.firebaseio.com",
+        projectId: "goelectric-e9299",
+        storageBucket: "goelectric-e9299.firebasestorage.app",
+        messagingSenderId: "81618360543",
+        appId: "1:81618360543:web:67a9a4d38ec18400c1316a",
+        measurementId: "G-6FZQSDWEZJ"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const calendar = document.getElementById('calendar'), currentMonthElement = document.getElementById('current-month');
+    const dateSummary = document.getElementById('date-summary'), totalSummary = document.getElementById('total-summary');
+    const modal = document.getElementById('modal'), modalBody = document.getElementById('modal-body');
+    const deliveryCheckbox = document.getElementById('delivery-checkbox'), hotelInput = document.getElementById('hotel-name');
+    let currentDate = new Date(), startDate = null, endDate = null;
+
+    deliveryCheckbox.addEventListener('change', () => {
+        hotelInput.style.display = deliveryCheckbox.checked ? 'block' : 'none';
+        hotelInput.value = '';
+    });
+
+    function changeMonth(offset) {
+        currentDate.setMonth(currentDate.getMonth() + offset);
+        generateCalendar();
+    }
+
+    function generateCalendar() {
+        calendar.innerHTML = "";
+        const year = currentDate.getFullYear(), month = currentDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        currentMonthElement.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement('div');
+            const dayDate = new Date(year, month, day);
+            dayElement.className = dayDate < today ? 'day unavailable' : 'day available';
+            dayElement.textContent = day;
+            dayElement.onclick = () => selectDate(dayDate);
+            calendar.appendChild(dayElement);
+        }
+    }
+
+    function selectDate(date) {
+        if (!startDate || endDate || date < startDate) {
+            startDate = date;
+            endDate = null;
+            resetSelection();
+            markDaySelected(date);
+        } else {
+            endDate = date;
+            highlightRange();
+        }
+        updateSummary();
+    }
+
+    function highlightRange() {
+        resetSelection();
+        document.querySelectorAll('.day').forEach(day => {
+            const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), parseInt(day.textContent));
+            if (dayDate >= startDate && dayDate <= endDate) day.classList.add('selected');
+        });
+    }
+
+    function resetSelection() { document.querySelectorAll('.day').forEach(day => day.classList.remove('selected')); }
+
+    function markDaySelected(date) { document.querySelectorAll('.day')[date.getDate() - 1].classList.add('selected'); }
+
+    function updateSummary() {
+        const total = calculateTotal();
+        dateSummary.textContent = startDate && endDate ? `From ${startDate.toDateString()} to ${endDate.toDateString()}` : "Selected dates: None";
+        totalSummary.textContent = `Total: €${total}`;
+    }
+
+    function calculateTotal() { return startDate && endDate ? Math.max(40, 40 + (endDate - startDate) / 86400000 * 20) : 0; }
+
+    function showConfirmation() {
+        if (!validateForm()) return;
+        modal.style.display = 'flex';
+        modalBody.innerHTML = `Name: ${document.getElementById('first-name').value} ${document.getElementById('last-name').value}<br>
+                               Phone: ${document.getElementById('phone-number').value}<br>
+                               ${deliveryCheckbox.checked ? `Hotel: ${hotelInput.value}<br>` : ''}
+                               ${dateSummary.textContent}<br>
+                               ${totalSummary.textContent}`;
+    }
+
+    function validateForm() {
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const phoneNumber = document.getElementById('phone-number').value.trim();
+        if (!firstName || !lastName || !phoneNumber || (deliveryCheckbox.checked && !hotelInput.value.trim())) {
+            alert("Please fill out all required fields.");
+            return false;
+        }
+        return true;
+    }
+
+    function closeModal() { modal.style.display = 'none'; }
+
+    function submitBooking() {
+        db.ref('bookings').push({
+            firstName: document.getElementById('first-name').value,
+            lastName: document.getElementById('last-name').value,
+            phoneNumber: document.getElementById('phone-number').value,
+            hotel: deliveryCheckbox.checked ? hotelInput.value : 'N/A',
+            startDate: startDate.toDateString(),
+            endDate: endDate.toDateString(),
+            total: calculateTotal()
+        });
+        closeModal();
+        alert("Booking Confirmed!");
+        resetForm();
+    }
+
+    function resetForm() {
+        document.getElementById('first-name').value = "";
+        document.getElementById('last-name').value = "";
+        document.getElementById('phone-number').value = "";
+        hotelInput.value = "";
+        deliveryCheckbox.checked = false;
+        hotelInput.style.display = 'none';
+        startDate = null;
+        endDate = null;
+        updateSummary();
+        resetSelection();
+    }
+
+    generateCalendar();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
